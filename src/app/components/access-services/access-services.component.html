@@ -1,0 +1,8 @@
+@if(applicationNode){
+    <div class="component">
+        <div class="section">
+            <ur-button (handleClick)="onButtonPress()">Press me</ur-button>
+            <p>Response is: {{ apiResponse | async }}</p>
+        </div>
+    </div>
+}

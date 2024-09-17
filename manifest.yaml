@@ -1,0 +1,10 @@
+metadata:
+  vendorID: urcaps-r-us
+  urcapID: accessing-services
+  vendorName: URCaps R. Us
+  urcapName: accessing-services
+  version: 1.0.0
+artifacts:
+  webArchives:
+  - id: accessing-services
+    folder: accessing-services

@@ -1,0 +1,12 @@
+{
+  "applicationNodes": [
+    {
+      "translationPath": "assets/i18n/",
+      "behaviorURI": "access-services.worker.js",
+      "presenterURI": "main.js",
+      "componentTagName": "urcaps-r-us-accessing-services-access-services"
+    }
+  ],
+  "programNodes": [],
+  "smartSkills": []
+}
