@@ -1,8 +1,14 @@
 @if(applicationNode){
     <div class="component">
         <div class="section">
-            <ur-button (handleClick)="onButtonPress()">Press me</ur-button>
+            <ur-button (handleClick)="onToolPress()">Tool IO</ur-button>
+            <ur-button (handleClick)="onWiredPress()">Wired IO</ur-button>
+            <ur-button (handleClick)="onButtonPress()">Track Signals</ur-button>
+            <ur-button (handleClick)="onDestroyPress()">Unsubscribe</ur-button>
             <p>Response is: {{ apiResponse | async }}</p>
+        </div>
+        <div class="section">
+            <ur-button (handleClick)="onButtonPress2()">Press me</ur-button>
         </div>
     </div>
 }
