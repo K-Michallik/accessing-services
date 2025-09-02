@@ -5,3 +5,119 @@
     padding: 0.5rem 0.5rem 1rem;
   }
 }
+
+// Signal Status Styling
+.status-indicator {
+  font-size: 0.8em;
+  margin-left: 0.5rem;
+  
+  &.active {
+    color: #28a745;
+  }
+  
+  &.inactive {
+    color: #dc3545;
+  }
+}
+
+.signals-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.signal-item {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  // Different colors for different signal types
+  &.signal-type-boolean-value {
+    border-left: 4px solid #007bff;
+  }
+  
+  &.signal-type-float-value {
+    border-left: 4px solid #28a745;
+  }
+  
+  &.signal-type-analog-domain {
+    border-left: 4px solid #ffc107;
+  }
+}
+
+.signal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  
+  strong {
+    font-size: 1.1em;
+    color: #495057;
+  }
+}
+
+.signal-type {
+  font-size: 0.8em;
+  color: #6c757d;
+  background-color: #e9ecef;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.signal-value {
+  margin: 0.5rem 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.boolean-value {
+  &.true {
+    color: #28a745;
+  }
+  
+  &.false {
+    color: #dc3545;
+  }
+}
+
+.float-value {
+  color: #17a2b8;
+  font-family: 'Courier New', monospace;
+}
+
+.domain-value {
+  color: #fd7e14;
+  font-weight: bold;
+}
+
+.unknown-value {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.signal-timestamp {
+  font-size: 0.8em;
+  color: #6c757d;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.no-signals {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+  
+  p {
+    margin: 0;
+  }
+}

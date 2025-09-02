@@ -8,4 +8,4 @@ artifacts:
   webArchives:
   - id: accessing-services
     folder: accessing-services
-    devUrl: http://host.gateway.ip:4200/
+    # devUrl: http://host.gateway.ip:4200/
