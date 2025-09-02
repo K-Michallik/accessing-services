@@ -1,61 +1,133 @@
 @if(applicationNode){
     <div class="component">
+        <!-- Tool I/O Header -->
         <div class="section">
-            <ur-button (handleClick)="onToolPress()">Tool IO</ur-button>
-            <ur-button (handleClick)="onWiredPress()">Wired IO</ur-button>
-            <ur-button (handleClick)="clearSignalHistory()">Clear History</ur-button>
-            <!-- Temporary debug buttons - remove later -->
-            <ur-button (handleClick)="logSignalStatusMap()">Log Signal Map</ur-button>
-            <ur-button (handleClick)="logSignalStatusList()">Log Signal List</ur-button>
-        </div>
-        
-        <!-- Signal Status Display -->
-        <div class="section">
-            <h3>Signal Status 
+            <ur-heading type="h2" size="large">Tool I/O</ur-heading>
+            <div class="status-section">
                 @if (isTrackingSignals()) {
                     <span class="status-indicator active">🟢 Tracking</span>
                 } @else {
                     <span class="status-indicator inactive">🔴 Not Tracking</span>
                 }
-            </h3>
-            
-            @if (signalStatusList().length > 0) {
-                <div class="signals-container">
-                    @for (signal of signalStatusList(); track signal.signalID) {
-                        <div class="signal-item" [class]="'signal-type-' + signal.type.replace('signal_', '').replace('_', '-')">
-                            <div class="signal-header">
-                                <strong>{{ signal.signalID }}</strong>
-                                <span class="signal-type">{{ signal.type }}</span>
-                            </div>
-                            <div class="signal-value">
-                                @switch (signal.type) {
-                                    @case ('signal_boolean_value') {
-                                        <span class="boolean-value" [class.true]="signal.value === true" [class.false]="signal.value === false">
-                                            {{ signal.value ? 'TRUE' : 'FALSE' }}
-                                        </span>
-                                    }
-                                    @case ('signal_float_value') {
-                                        <span class="float-value">{{ +signal.value | number:'1.3-3' }}</span>
-                                    }
-                                    @case ('signal_analog_domain') {
-                                        <span class="domain-value">{{ signal.value }}</span>
-                                    }
-                                    @default {
-                                        <span class="unknown-value">{{ signal.value }}</span>
-                                    }
-                                }
-                            </div>
-                            <div class="signal-timestamp">
-                                Last updated: {{ signal.lastUpdated | date:'medium' }}
-                            </div>
-                        </div>
+            </div>
+        </div>
+        
+        <!-- Signal Display in 4 Columns -->
+        <div class="section">
+            <div class="signals-grid">
+                <!-- Column 1: AI 0 -->
+                <div class="signal-column">
+                    <ur-heading type="h4" size="small">AI 0</ur-heading>
+                    @for (signal of ai0Signals(); track signal.signalID) {
+                        @switch (signal.type) {
+                            @case ('signal_float_value') {
+                                <ur-analog-signal-display
+                                    [signalID]="signal.signalID"
+                                    [isInput]="true"
+                                    [value]="getNumberValue(signal.value)"
+                                    [min]="0"
+                                    [max]="10"
+                                    [significantDigits]="3"
+                                    [domain]="getDomainForSignal(signal.signalID)"
+                                    [hasActionPreset]="false">
+                                </ur-analog-signal-display>
+                            }
+                            @default {
+                                <ur-card 
+                                    [headline]="signal.signalID"
+                                    [supportiveText]="signal.type"
+                                    [description]="'Value: ' + signal.value">
+                                </ur-card>
+                            }
+                        }
                     }
                 </div>
-            } @else {
-                <div class="no-signals">
-                    <p>No signal updates received yet. Signals will appear here automatically when they change.</p>
+
+                <!-- Column 2: AI 1 -->
+                <div class="signal-column">
+                    <ur-heading type="h4" size="small">AI 1</ur-heading>
+                    @for (signal of ai1Signals(); track signal.signalID) {
+                        @switch (signal.type) {
+                            @case ('signal_float_value') {
+                                <ur-analog-signal-display
+                                    [signalID]="signal.signalID"
+                                    [isInput]="true"
+                                    [value]="getNumberValue(signal.value)"
+                                    [min]="0"
+                                    [max]="10"
+                                    [significantDigits]="3"
+                                    [domain]="getDomainForSignal(signal.signalID)"
+                                    [hasActionPreset]="false">
+                                </ur-analog-signal-display>
+                            }
+                            @default {
+                                <ur-card 
+                                    [headline]="signal.signalID"
+                                    [supportiveText]="signal.type"
+                                    [description]="'Value: ' + signal.value">
+                                </ur-card>
+                            }
+                        }
+                    }
                 </div>
-            }
+
+                <!-- Column 3: Digital Inputs -->
+                <div class="signal-column">
+                    <ur-heading type="h4" size="small">Digital Inputs</ur-heading>
+                    @for (signal of diSignals(); track signal.signalID) {
+                        @switch (signal.type) {
+                            @case ('signal_boolean_value') {
+                                <ur-digital-signal-display
+                                    [signalID]="signal.signalID"
+                                    [isInput]="true"
+                                    [value]="getBooleanValue(signal.value)"
+                                    [isConfigurable]="false"
+                                    [hasActionPreset]="false"
+                                    [hasSafetyAction]="false">
+                                </ur-digital-signal-display>
+                            }
+                            @default {
+                                <ur-card 
+                                    [headline]="signal.signalID"
+                                    [supportiveText]="signal.type"
+                                    [description]="'Value: ' + signal.value">
+                                </ur-card>
+                            }
+                        }
+                    }
+                </div>
+
+                <!-- Column 4: Digital Outputs -->
+                <div class="signal-column">
+                    <ur-heading type="h4" size="small">Digital Outputs</ur-heading>
+                    @for (signal of doSignals(); track signal.signalID) {
+                        @switch (signal.type) {
+                            @case ('signal_boolean_value') {
+                                <ur-digital-signal-display
+                                    [signalID]="signal.signalID"
+                                    [isInput]="false"
+                                    [value]="getBooleanValue(signal.value)"
+                                    [isConfigurable]="false"
+                                    [hasActionPreset]="false"
+                                    [hasSafetyAction]="false">
+                                </ur-digital-signal-display>
+                            }
+                            @default {
+                                <ur-card 
+                                    [headline]="signal.signalID"
+                                    [supportiveText]="signal.type"
+                                    [description]="'Value: ' + signal.value">
+                                </ur-card>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug Button at Bottom -->
+        <div class="section debug-section">
+            <ur-button (handleClick)="logSignalStatusMap()">Log Signal Map</ur-button>
         </div>
     </div>
 }

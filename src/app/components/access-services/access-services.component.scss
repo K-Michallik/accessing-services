@@ -6,6 +6,11 @@
   }
 }
 
+// Status section styling
+.status-section {
+  margin-top: 0.5rem;
+}
+
 // Signal Status Styling
 .status-indicator {
   font-size: 0.8em;
@@ -20,104 +25,46 @@
   }
 }
 
-.signals-container {
+// 4-column grid for signals
+.signals-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
   margin-top: 1rem;
-}
-
-.signal-item {
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  transition: all 0.2s ease;
   
-  &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  // Different colors for different signal types
-  &.signal-type-boolean-value {
-    border-left: 4px solid #007bff;
-  }
-  
-  &.signal-type-float-value {
-    border-left: 4px solid #28a745;
-  }
-  
-  &.signal-type-analog-domain {
-    border-left: 4px solid #ffc107;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 }
 
-.signal-header {
+.signal-column {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
+  flex-direction: column;
+  gap: 1rem;
   
-  strong {
-    font-size: 1.1em;
-    color: #495057;
-  }
-}
-
-.signal-type {
-  font-size: 0.8em;
-  color: #6c757d;
-  background-color: #e9ecef;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-}
-
-.signal-value {
-  margin: 0.5rem 0;
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.boolean-value {
-  &.true {
-    color: #28a745;
+  // Column header styling
+  ur-heading {
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
   }
   
-  &.false {
-    color: #dc3545;
+  // UR component styling
+  ur-digital-signal-display,
+  ur-analog-signal-display,
+  ur-card {
+    width: 100%;
   }
 }
 
-.float-value {
-  color: #17a2b8;
-  font-family: 'Courier New', monospace;
-}
-
-.domain-value {
-  color: #fd7e14;
-  font-weight: bold;
-}
-
-.unknown-value {
-  color: #6c757d;
-  font-style: italic;
-}
-
-.signal-timestamp {
-  font-size: 0.8em;
-  color: #6c757d;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+// Debug section at bottom
+.debug-section {
   border-top: 1px solid #e9ecef;
-}
-
-.no-signals {
+  padding-top: 1rem;
   text-align: center;
-  padding: 2rem;
-  color: #6c757d;
-  font-style: italic;
-  
-  p {
-    margin: 0;
-  }
+
 }

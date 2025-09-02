@@ -10,7 +10,6 @@ interface SignalStatus {
   signalID: string;
   type: string;
   value: boolean | number | string;
-  lastUpdated: Date;
 }
 
 @Component({
@@ -34,6 +33,31 @@ export class AccessServicesComponent implements ApplicationPresenter, OnChanges,
     signalStatusList = computed(() => {
         const statusMap = this.signalStatusMap();
         return Array.from(statusMap.values()).sort((a, b) => a.signalID.localeCompare(b.signalID));
+    });
+
+    // Computed signals for organized columns
+    ai0Signals = computed(() => {
+        const statusMap = this.signalStatusMap();
+        return Array.from(statusMap.values()).filter(signal => signal.signalID === 'AI 0');
+    });
+
+    ai1Signals = computed(() => {
+        const statusMap = this.signalStatusMap();
+        return Array.from(statusMap.values()).filter(signal => signal.signalID === 'AI 1');
+    });
+
+    diSignals = computed(() => {
+        const statusMap = this.signalStatusMap();
+        return Array.from(statusMap.values())
+            .filter(signal => signal.signalID.startsWith('DI '))
+            .sort((a, b) => a.signalID.localeCompare(b.signalID));
+    });
+
+    doSignals = computed(() => {
+        const statusMap = this.signalStatusMap();
+        return Array.from(statusMap.values())
+            .filter(signal => signal.signalID.startsWith('DO '))
+            .sort((a, b) => a.signalID.localeCompare(b.signalID));
     });
 
     // Signal for tracking connection status
@@ -139,16 +163,11 @@ export class AccessServicesComponent implements ApplicationPresenter, OnChanges,
         const signalStatus: SignalStatus = {
             signalID: event.signalID,
             type: event.type,
-            value: value,
-            lastUpdated: new Date()
+            value: value
         };
 
         currentMap.set(event.signalID, signalStatus);
         this.signalStatusMap.set(currentMap);
-    }
-
-    clearSignalHistory(): void {
-        this.signalStatusMap.set(new Map());
     }
 
     // Temporary debug methods - remove later
@@ -156,36 +175,22 @@ export class AccessServicesComponent implements ApplicationPresenter, OnChanges,
         console.log('signalStatusMap:', this.signalStatusMap());
     }
 
-    logSignalStatusList(): void {
-        console.log('signalStatusList:', this.signalStatusList());
+    // Helper methods for UR components
+    getDomainForSignal(signalID: string): string {
+        // Try to find the domain from the signal map
+        const signal = this.signalStatusMap().get(signalID);
+        if (signal && signal.type === 'signal_analog_domain') {
+            return signal.value as string;
+        }
+        return 'CURRENT'; // default domain
     }
 
-    async onWiredPress(): Promise<void> {
-      const val: SignalBooleanValue = {
-        signalID: 'DO 0',
-        type:     'signal_boolean_value',
-        value:    true
-      };
-      await this.applicationAPI.sourceService.setSourceSignalValue(
-        'ur-robot-io',
-        'ur-wired-io',
-        'DO 0',
-        val
-      );
+    getBooleanValue(value: boolean | number | string): boolean {
+        return Boolean(value);
     }
 
-    async onToolPress(): Promise<void> {
-      const val: SignalBooleanValue = {
-        signalID: 'DO 0',
-        type:     'signal_boolean_value',
-        value:    true
-      };
-      await this.applicationAPI.sourceService.setSourceSignalValue(
-        'ur-robot-io',
-        'ur-tool-io',
-        'DO 0',
-        val
-      );
+    getNumberValue(value: boolean | number | string): number {
+        return Number(value);
     }
 
     ngOnDestroy(): void {
