@@ -2,6 +2,9 @@
 
 This project is an Angular-based URCap Web Contribution that demonstrates how to access and monitor Universal Robots' Tool I/O signals in real-time. The application provides a comprehensive interface for viewing analog inputs (AI), digital inputs (DI), and digital outputs (DO) from the robot's tool interface.
 
+> **⚠️ Version Compatibility Notice**  
+> This URCap is compatible with **Polyscope 10.11**.
+
 ## What it does
 
 The **Accessing Services** URCap provides a real-time monitoring dashboard for Universal Robots' Tool I/O signals. It displays:
@@ -9,7 +12,6 @@ The **Accessing Services** URCap provides a real-time monitoring dashboard for U
 - **Analog Inputs (AI 0, AI 1)**: Shows voltage/current values with proper scaling and domain information
 - **Digital Inputs (DI 0, DI 1)**: Displays boolean on/off states
 - **Digital Outputs (DO 0, DO 1)**: Shows boolean on/off states for outputs
-
 
 
 ![Accessing Services Application UI](resources/accessing-services-application-node.png)
